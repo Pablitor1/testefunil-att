@@ -308,41 +308,61 @@
       const urlParams = new URLSearchParams(window.location.search);
       let up = urlParams.get('up');
 
-      let upsellUrl = "../up1";
-      let valor = "36.72";
+      let upsellUrl = "../upsell1/"; // Default to upsell1 for main offer
+      let valor = "32.40"; // Front offer price
       let front = true;
 
       if (up) {
         const upInt = parseInt(up);
         switch (upInt) {
           case 1:
-            upsellUrl = "../up2";
-            valor = "20.64";
+            upsellUrl = "../upsell2/";
+            valor = "17.90";
             front = false;
             break;
           case 2:
-            upsellUrl = "../up3";
-            valor = "27.90";
+            upsellUrl = "../upsell3/";
+            valor = "9.90";
             front = false;
             break;
           case 3:
-            upsellUrl = "../up4";
-            valor = "21.56";
+            upsellUrl = "../upsell4/";
+            valor = "14.57";
             front = false;
             break;
           case 4:
-            upsellUrl = "../up5";
-            valor = "22.30";
+            upsellUrl = "../upsell5/";
+            valor = "27.90";
             front = false;
             break;
           case 5:
-            upsellUrl = "../up6";
-            valor = "43.94";
+            upsellUrl = "../upsell6/";
+            valor = "14.90";
             front = false;
             break;
           case 6:
-            upsellUrl = "../up2";
-            valor = "17.50";
+            upsellUrl = "../upsell7/";
+            valor = "12.40";
+            front = false;
+            break;
+          case 7:
+            upsellUrl = "../upsell8/";
+            valor = "27.80";
+            front = false;
+            break;
+          case 8:
+            upsellUrl = "../upsell9/";
+            valor = "17.80";
+            front = false;
+            break;
+          case 9:
+            upsellUrl = "../upsell10/";
+            valor = "32.70";
+            front = false;
+            break;
+          case 10:
+            upsellUrl = "../upsell4/"; // Loop back to upsell4
+            valor = "29.90";
             front = false;
             break;
           default:
@@ -354,7 +374,7 @@
       return {
         upsellUrl: upsellUrl,
         valor: parseFloat(valor),
-        oferta: "tiktok", // valor fixo usado no PHP
+        oferta: "tiktok",
         up: up
       };
     }

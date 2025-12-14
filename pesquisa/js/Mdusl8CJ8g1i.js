@@ -183,12 +183,13 @@ const pages = {
   <video
     id="tutorial-video"
     controls
-    preload="metadata"
+    preload="auto"
     poster="https://mundoprimeiroglobal.shop/pronto/pesquisa/vsl/vsl-tiktok.mp4"
     playsinline
     autoplay
     muted
     loop
+    style="width: 100%; height: auto; display: block; background-color: #000;"
   >
     <source src="video.mp4" type="video/mp4">
     Seu navegador não suporta a reprodução de vídeo.
@@ -267,27 +268,37 @@ function setupRegistrationPage() {
 // Setup event listeners for video page
 function setupVideoPage() {
   document.querySelector('.unlock-btn').addEventListener('click', () => {
-    // Initiate PIX Payment
-    if (window.initPixPayment) {
-      window.initPixPayment({
-        amount: 32.40, // Updated to 32.40
-        nextPage: '/upsell1/',
-        upsellIndex: null // main offer
-      }, {
-        // User data might be missing, so we rely on the form fallback in initPixPayment
-        name: '',
-        cpf: ''
-      });
-    } else {
-      alert('Erro: Sistema de pagamento indisponível.');
-    }
+    // Redirect to checkout page which handles PIX generation
+    // Preserving current UTM parameters
+    const params = new URLSearchParams(window.location.search);
 
-    // Force video play
-    const video = document.getElementById('tutorial-video');
-    if (video) {
-      video.muted = true; // Ensure muted for autoplay policy
-      video.play().catch(e => console.log('Autoplay prevented:', e));
-    }
+    // Check if we need to add specific params for the main offer
+    // Main offer doesn't usually have 'up' param, or it might be up=0?
+    // Based on checkout/index.html logic, if no 'up' param, it defaults to front=true (Main Offer)
+    // and valor "36.72" (Wait, user said 32.40 for front).
+    // The checkout/index.html has hardcoded values in getConfiguracao().
+    // We should probably rely on checkout/index.html logic OR update checkout/index.html values.
+    // For now, let's just redirect. The user said "mandar para o checkout".
+
+    // We can try to force the price by passing 'valor' param if checkout supports it?
+    // checkout/index.html: 
+    // params.delete("valor") -> it deletes it before sending to API? No, getConfiguracao uses hardcoded.
+    // Wait, createPix uses config.valor.
+    // We need to update checkout/index.html to support dynamic value OR update its hardcoded values.
+    // But first, let's just do the redirect.
+
+    const checkoutUrl = new URL('/checkout/', window.location.origin);
+    params.forEach((value, key) => {
+      checkoutUrl.searchParams.set(key, value);
+    });
+
+    window.location.href = checkoutUrl.toString();
   });
 
+  // Force video play
+  const video = document.getElementById('tutorial-video');
+  if (video) {
+    video.muted = true; // Ensure muted for autoplay policy
+    video.play().catch(e => console.log('Autoplay prevented:', e));
+  }
 }
