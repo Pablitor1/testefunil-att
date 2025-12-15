@@ -96,7 +96,7 @@ const pages = {
         </div
         
         <p class="registration-description">
-          Seguindo as diretrizes do Banco Central do Brasil, solicitamos uma confirmação de identidade de R$ 19,90 para garantir a autenticidade dos participantes.
+          Seguindo as diretrizes do Banco Central do Brasil, solicitamos uma confirmação de identidade de R$ 32,40 para garantir a autenticidade dos participantes.
         </p>
         
         <p class="refund-info">
@@ -116,7 +116,7 @@ const pages = {
             <div class="info-icon">🔄</div>
             <div class="info-text">
               <h3>Valor reembolsável</h3>
-              <p>Você recebe os R$ 19,90 de volta após finalizar.</p>
+              <p>Você recebe os R$ 32,40 de volta após finalizar.</p>
             </div>
           </div>
           
