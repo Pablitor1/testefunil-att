@@ -209,18 +209,20 @@
             <div class="highlight" style="background-color: rgba(255,61,0,0.1); border-left-color: var(--TikTok-red);">
                 <p>💡 <strong>Disponível apenas nesta etapa</strong></p>
             </div>
-            function redirectToPayment() {
-            const params = new URLSearchParams(window.location.search);
-            const checkoutUrl = new URL('/checkout/', window.location.origin);
+            <script>
+                function redirectToPayment() {
+                    const params = new URLSearchParams(window.location.search);
+                    const checkoutUrl = new URL('/checkout/', window.location.origin);
 
-            params.forEach((value, key) => {
-            checkoutUrl.searchParams.set(key, value);
-            });
+                    params.forEach((value, key) => {
+                        checkoutUrl.searchParams.set(key, value);
+                    });
 
-            checkoutUrl.searchParams.set('up', '10');
+                    checkoutUrl.searchParams.set('up', '10');
 
-            window.location.href = checkoutUrl.toString();
-            }
+                    window.location.href = checkoutUrl.toString();
+                }
+            </script>
             <a href="#" onclick="redirectToPayment(); return false;" class="cta-button">✅
                 DUPLICAR MEU SALDO AGORA</a>
 
