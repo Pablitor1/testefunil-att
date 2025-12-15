@@ -148,7 +148,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="images/logo.svg" alt="Love Pix Logo" class="logo" style="width: 300px">
+      <img src="/logo.svg" alt="TikTok Logo" class="logo" style="width: 300px">
       <h1>PARABÉNS!</h1>
     </div>
     <div class="progress-bar">
@@ -196,25 +196,29 @@
       window.location.href = url.toString();
     }
   </script>
-  function redirectToPayment() {
-  const params = new URLSearchParams(window.location.search);
-  const checkoutUrl = new URL('/checkout/', window.location.origin);
+  <script>
+    function redirectToPayment() {
+      const params = new URLSearchParams(window.location.search);
+      const checkoutUrl = new URL('/checkout/', window.location.origin);
 
-  params.forEach((value, key) => {
-  checkoutUrl.searchParams.set(key, value);
-  });
+      params.forEach((value, key) => {
+        checkoutUrl.searchParams.set(key, value);
+      });
 
-  checkoutUrl.searchParams.set('up', '1');
+      checkoutUrl.searchParams.set('up', '1');
 
-  window.location.href = checkoutUrl.toString();
-  }
+      window.location.href = checkoutUrl.toString();
+    }
 
-  const progressElement = document.getElementById("progress");
-  let progress = 11;
+    const progressElement = document.getElementById("progress");
+    let progress = 11;
 
-  function updateProgress() {
-  if (progress < 94) { progress++; progressElement.style.width=`${progress}%`;
-    progressElement.textContent=`${progress}%`; setTimeout(updateProgress, 50); } } updateProgress(); </script>
+    function updateProgress() {
+      if (progress < 94) {
+        progress++; progressElement.style.width = `${progress}%`;
+        progressElement.textContent = `${progress}%`; setTimeout(updateProgress, 50);
+      }
+    } updateProgress(); </script>
 
 
 </body>
