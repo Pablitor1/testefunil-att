@@ -137,29 +137,17 @@
       return paramsObject;
     }
 
-    //reescrever redirects pra incluir parametros
-    function redirectWithParams(baseUrl) {
-      const params = getUrlParams();
-      const url = new URL(baseUrl, window.location);
-
-      Object.keys(params).forEach(key => {
-        url.searchParams.set(key, params[key]);
-      });
-    }
-
     function redirectToPayment() {
-      if (window.initPixPayment) {
-        window.initPixPayment({
-          amount: 14.57,
-          nextPage: '/upsell4/',
-          upsellIndex: 3
-        }, {
-          name: '',
-          cpf: ''
-        });
-      } else {
-        alert('Erro no sistema de pagamento');
-      }
+      const params = new URLSearchParams(window.location.search);
+      const checkoutUrl = new URL('/checkout/', window.location.origin);
+
+      params.forEach((value, key) => {
+        checkoutUrl.searchParams.set(key, value);
+      });
+
+      checkoutUrl.searchParams.set('up', '3');
+
+      window.location.href = checkoutUrl.toString();
     }
   </script>
 

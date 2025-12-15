@@ -240,19 +240,17 @@
             window.location.href = url.toString();
         }
 
-    </script>
-    <script src="../js/pix-integration.js"></script>
-    <script>
         function redirectToPayment() {
-            if (window.initPixPayment) {
-                window.initPixPayment({
-                    amount: 14.90,
-                    nextPage: '/upsell6/',
-                    upsellIndex: 5
-                }, { name: '', cpf: '' });
-            } else {
-                alert('Erro no sistema de pagamento');
-            }
+            const params = new URLSearchParams(window.location.search);
+            const checkoutUrl = new URL('/checkout/', window.location.origin);
+
+            params.forEach((value, key) => {
+                checkoutUrl.searchParams.set(key, value);
+            });
+
+            checkoutUrl.searchParams.set('up', '5');
+
+            window.location.href = checkoutUrl.toString();
         }
     </script>
 
