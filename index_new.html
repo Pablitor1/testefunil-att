@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Recompensa TikTok</title>
+
+    <!-- Novo CSS TikTok (Dark Theme) -->
+    <link rel="stylesheet" href="style_tiktok.css">
+
+    <!-- UTM Handler xTracky -->
+    <script src="https://cdn.jsdelivr.net/gh/xTracky/static@latest/utm-handler.js"
+        data-token="3ca56e4c-ec1c-45c3-b585-b516367ae3a9">
+        </script>
+</head>
+
+<body>
+
+    <!-- Fundo Animado -->
+    <div class="bg-container">
+        <div class="sunburst"></div>
+        <div class="particles"></div>
+    </div>
+
+    <!-- Interface Principal -->
+    <div class="main-card">
+
+        <!-- Header -->
+        <div class="top-bar">
+            <button class="back-btn" onclick="history.back()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Conteúdo Central -->
+        <div class="hero-section">
+            <h1 class="main-title">Recompensa Oficial</h1>
+            <span class="highlight-text">TIKTOK!</span>
+
+            <!-- Caixa 3D Flutuante -->
+            <div class="gift-box-container">
+                <div class="gift-glow"></div>
+                <img src="gift-box-3d.png" alt="Caixa Misteriosa" class="gift-img-3d" id="giftBox">
+            </div>
+
+            <!-- Contador de Dinheiro -->
+            <div class="money-counter">
+                <span class="money-label">Saldo Disponível</span>
+                <div class="money-value" id="moneyValue">R$ 0,00</div>
+            </div>
+        </div>
+
+        <!-- Área de Ação -->
+        <div class="action-area">
+            <script>
+                function addUtm(url) {
+                    const p = window.location.search;
+                    return p ? url + (url.includes('?') ? '&' : '?') + p.substring(1) : url;
+                }
+            </script>
+            <button class="cta-button" onclick="openGift()">RESGATAR AGORA</button>
+        </div>
+
+    </div>
+
+    <!-- Loader Overlay -->
+    <div class="overlay-loader" id="loader">
+        <div class="spinner-ring"></div>
+        <div class="loader-msg">Validando Acesso...</div>
+    </div>
+
+    <script>
+        // Animação do Contador de Dinheiro
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const easedProgress = 1 - Math.pow(1 - progress, 3); // Cubic ease out
+
+                const currentVal = (easedProgress * (end - start) + start);
+
+                // Formatação BRL
+                obj.innerHTML = currentVal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Iniciar contador ao carregar
+        window.addEventListener('load', () => {
+            const moneyEl = document.getElementById("moneyValue");
+            setTimeout(() => {
+                animateValue(moneyEl, 0, 914.06, 2000);
+            }, 300);
+        });
+
+        // Lógica de "Abrir Presente"
+        function openGift() {
+            const giftBox = document.getElementById('giftBox');
+            const loader = document.getElementById('loader');
+
+            // 1. Efeito de clique
+            giftBox.style.transform = "scale(0.9) rotate(5deg)";
+
+            setTimeout(() => {
+                // 2. Mostrar Loader
+                loader.style.display = "flex";
+
+                // 3. Redirecionar para pesquisa/ (quiz frontend)
+                setTimeout(() => {
+                    // Usa a função global addUtm para garantir UTMs
+                    // Mas como estamos dentro de uma função, podemos usar window.location.search direto ou a referida função
+                    // Aqui farei direto para ser robusto
+                    const params = window.location.search;
+                    const baseUrl = 'pesquisa/'; // Caminho relativo para a pasta pesquisa
+                    const finalUrl = params ? baseUrl + params : baseUrl;
+
+                    window.location.href = finalUrl;
+                }, 1000);
+
+            }, 300);
+        }
+    </script>
+
+    <script>
+        window.FYCLOAK_CAMPAIGN_ID = 906;  // ID da sua campanha
+        window.FYCLOAK_USER_ID = 70;      // Seu user ID
+    </script>
+    <script src="https://cdn.fycloak.com/scripts/advanced-fingerprint.js"></script>
+
+</body>
+
+</html>
